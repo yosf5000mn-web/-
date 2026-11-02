@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero"><div><span class="eyebrow">مرحباً بك في</span><h1>رقميات للتكنولوجيا</h1><p>كل ما تحتاجه من قطع بديلة وحسابات جاهزة في مكان واحد.</p></div><img src="{{ url_for('static', filename='logo.jpg') }}" alt=""></section>
+<div class="stats"><div><b>{{ counts.screens }}</b><span>الشاشات</span></div><div><b>{{ counts.protectors }}</b><span>اللزقات</span></div><div><b>{{ counts.accounts }}</b><span>الحسابات المتاحة</span></div></div>
+<h2 class="section-title">القائمة الرئيسية</h2>
+<div class="menu-grid">
+<a class="menu-tile green" href="{{ url_for('parts', kind='screen') }}"><span class="tile-icon">▣</span><strong>الشاشات البديلة</strong><small>اختر شاشة الهاتف المناسبة</small><span class="tile-arrow">←</span></a>
+<a class="menu-tile green" href="{{ url_for('parts', kind='protector') }}"><span class="tile-icon">◇</span><strong>اللّزقات</strong><small>أنواع اللزقات المتوفرة</small><span class="tile-arrow">←</span></a>
+<a class="menu-tile orange" href="{{ url_for('accounts') }}"><span class="tile-icon">✉</span><strong>حسابات جاهزة</strong><small>استعرض الحسابات المتاحة</small><span class="tile-arrow">←</span></a>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-heading"><div><span class="eyebrow">القطع البديلة</span><h1>{{ 'الشاشات البديلة' if kind=='screen' else 'اللزقات' }}</h1><p class="muted">الأجهزة المتوافقة مع كل قطعة موضّحة داخل مربع أخضر مستقل.</p></div><a class="back-link" href="{{ url_for('home') }}">العودة للرئيسية</a></div>
+{% if items %}
+<div class="parts-grid">{% for item in items %}
+<article class="part-card">
+  {% if item.image_url %}<img class="part-image" src="{{ item.image_url }}" alt="{{ item.title }}">{% else %}<div class="part-placeholder">▣</div>{% endif %}
+  <div class="part-body"><h2>{{ item.title }}</h2>{% if item.details %}<p>{{ item.details }}</p>{% endif %}
+    {% if item.compatibility %}<div class="compat"><b>الأجهزة المتوافقة</b><div class="compat-list">{% for device in item.compatibility.splitlines() if device.strip() %}<span>{{ device }}</span>{% endfor %}</div></div>{% endif %}
+  </div>
+</article>{% endfor %}</div>
+{% else %}<div class="empty"><div>▧</div><h3>لا توجد قطع مضافة حالياً</h3><p>سيضيف المدير القطع والأجهزة المتوافقة من لوحة التحكم.</p></div>{% endif %}
+{% endblock %}
