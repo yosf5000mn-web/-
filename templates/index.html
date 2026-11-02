@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero"><div><p class="eyebrow">SMART PARTS • DIGITAL SERVICES</p><h1>أهلاً بك في <span>رقميات</span></h1><p>ابحث عن القطع المتوافقة أو احصل على حساب جاهز من مخزون المتجر.</p></div><div class="hero-icon">ر</div></section>
+<div class="tabs"><button class="tab active" data-tab="parts">القطع البديلة</button><button class="tab" data-tab="accounts">الحسابات الجاهزة</button></div>
+<section id="parts" class="panel"><div class="section-head"><div><h2>القطع البديلة</h2><p>ابحث باسم الهاتف واعرف القطع المطابقة له.</p></div></div>
+<div class="searchrow"><input id="phoneSearch" placeholder="مثال: Redmi Note 10"><select id="partKind"><option value="all">كل القطع</option><option value="screen">شاشات</option><option value="protector">لزقات</option></select><button id="searchBtn" class="primary">بحث</button></div><div id="screenResults" class="tiles"><div class="empty">اكتب اسم الجهاز لعرض القطع المتوافقة.</div></div></section>
+<section id="accounts" class="panel hidden"><div class="section-head"><div><h2>حسابات Gmail الجاهزة</h2><p>احصل على حساب متوفر من مخزون رقميات.</p></div></div>
+<div class="gmail-card"><div class="gmail-mark">M</div><h3>تجهيز حساب Gmail</h3><p>اضغط على الزر لنبدأ تجهيز حسابك.</p><button id="createAccount" class="primary big">＋ إنشاء حساب</button>
+<div id="progressArea" class="hidden"><div class="orbit"><div class="user-shape">●</div></div><h3 id="progressTitle">جاري بدء العملية...</h3><p id="progressText">يرجى الانتظار قليلاً</p><div class="progress"><span id="progressBar"></span></div></div>
+<div id="accountResult" class="hidden"><div class="success">✓ تم تجهيز حساب من مخزون المتجر</div><div class="credential"><small>البريد الإلكتروني</small><strong id="accountEmail"></strong><button class="copy" data-copy="email">نسخ</button></div><div class="credential"><small>كلمة المرور</small><strong id="accountPassword"></strong><button class="copy" data-copy="password">نسخ</button></div><p class="hint">احتفظ بالبيانات وسجّل الدخول إلى Gmail. بعد نجاح الدخول اضغط الزر أدناه.</p><button id="doneLogin" class="primary big">تم تسجيل الدخول</button></div>
+</div></section>
+{% endblock %}{% block scripts %}<script src="{{ url_for('static', filename='home.js') }}"></script>{% endblock %}
