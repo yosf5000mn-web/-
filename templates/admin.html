@@ -1,34 +1,5 @@
-{% extends "base.html" %}{% block content %}
-<div class="page-heading"><div><span class="eyebrow">إدارة الموقع</span><h1>لوحة تحكم المدير</h1><p class="muted">أضف المحتوى والموظفين وتابع الحسابات.</p></div></div>
-<div class="admin-grid">
-<section class="admin-card"><h2>＋ إضافة قطعة بديلة</h2>
-<form method="post" action="{{ url_for('add_part') }}" class="stack">
-<label>نوع القطعة<select name="kind"><option value="screen">شاشة هاتف</option><option value="protector">لزقة</option></select></label>
-<label>اسم القطعة<input name="title" required placeholder="مثال: شاشة iPhone 13"></label>
-<label>تفاصيل إضافية<textarea name="details" rows="2" placeholder="ملاحظات أو وصف القطعة"></textarea></label>
-<label>الأجهزة المتوافقة <small class="muted">(كل جهاز في سطر مستقل)</small><textarea name="compatibility" rows="4" placeholder="iPhone 13&#10;iPhone 13 Pro"></textarea></label>
-<label>رابط صورة (اختياري)<input name="image_url" type="url" placeholder="https://..."></label><button class="primary">إضافة القطعة</button>
-</form></section>
-<section class="admin-card"><h2>＋ إضافة حساب بريد جاهز</h2>
-<form method="post" action="{{ url_for('add_account') }}" class="stack">
-<label>البريد الإلكتروني<input name="email" type="email" required placeholder="name@example.com"></label>
-<label>كلمة المرور<input name="account_password" required placeholder="كلمة مرور الحساب"></label>
-<label>ملاحظة اختيارية<input name="notes" placeholder="مثلاً: حساب جاهز"></label><button class="primary">إضافة الحساب</button>
-</form><p class="hint">أضف فقط حسابات تملكها أو لديك إذن بتوزيعها.</p></section>
-<section class="admin-card"><h2>＋ إنشاء حساب موظف</h2>
-<form method="post" action="{{ url_for('add_user') }}" class="stack">
-<label>اسم المستخدم<input name="username" required placeholder="اسم الموظف"></label>
-<label>كلمة المرور<input name="password" type="password" minlength="4" required placeholder="4 أحرف على الأقل"></label>
-<label>الصلاحية<select name="role"><option value="employee">موظف</option><option value="admin">مدير</option></select></label><button class="primary">إنشاء المستخدم</button>
-</form></section>
-</div>
-<section class="admin-card table-card"><h2>المستخدمون</h2><div class="table-wrap"><table><thead><tr><th>اسم المستخدم</th><th>الصلاحية</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>
-{% for u in users %}<tr><td>{{ u.username }}</td><td>{{ 'مدير' if u.role=='admin' else 'موظف' }}</td><td>{{ 'مفعّل' if u.active else 'معطّل' }}</td><td>{% if u.id != current_user.id %}<form method="post" action="{{ url_for('toggle_user',user_id=u.id) }}"><button class="small-btn">{{ 'تعطيل' if u.active else 'تفعيل' }}</button></form>{% else %}الحساب الحالي{% endif %}</td></tr>{% endfor %}
-</tbody></table></div></section>
-<section class="admin-card table-card"><h2>القطع المضافة</h2><div class="table-wrap"><table><thead><tr><th>القطعة</th><th>النوع</th><th>الأجهزة المتوافقة</th><th>حذف</th></tr></thead><tbody>
-{% for p in parts %}<tr><td>{{ p.title }}</td><td>{{ 'شاشة' if p.kind=='screen' else 'لزقة' }}</td><td>{{ p.compatibility|replace('\n','، ') }}</td><td><form method="post" action="{{ url_for('delete_part',item_id=p.id) }}" onsubmit="return confirm('حذف القطعة؟')"><button class="danger-btn">حذف</button></form></td></tr>{% else %}<tr><td colspan="4">لا توجد قطع.</td></tr>{% endfor %}
-</tbody></table></div></section>
-<section class="admin-card table-card"><h2>حسابات البريد ومتابعة الاستخدام</h2><div class="table-wrap"><table><thead><tr><th>البريد</th><th>الحالة</th><th>ملاحظة</th><th>إجراء</th></tr></thead><tbody>
-{% for a in accounts %}<tr><td>{{ a.email }}</td><td>{{ {'available':'متاح','claimed':'تم عرضه','completed':'تم تسجيل الدخول'}.get(a.status,a.status) }}</td><td>{{ a.notes }}</td><td><form method="post" action="{{ url_for('delete_account',account_id=a.id) }}" onsubmit="return confirm('حذف الحساب نهائياً؟')"><button class="danger-btn">حذف</button></form></td></tr>{% else %}<tr><td colspan="4">لا توجد حسابات.</td></tr>{% endfor %}
-</tbody></table></div></section>
-{% endblock %}
+{% extends "base.html" %}{% block content %}<div class="admin-title"><div><p class="eyebrow">CONTROL CENTER</p><h1>لوحة الإدارة</h1><p>إدارة القطع المتوافقة ومخزون الحسابات.</p></div><span class="admin-pill">مدير النظام</span></div>
+<div class="admin-grid"><section class="panel"><h2>＋ إضافة قطعة بديلة</h2><form method="post" action="/admin/screen" class="formgrid"><label>اسم الجهاز<input name="phone" placeholder="Redmi Note 10" required></label><label>نوع القطعة<select name="kind"><option value="screen">شاشة</option><option value="protector">لزقة</option></select></label><label class="wide">اسم الشاشة / القطعة<input name="part_name" placeholder="شاشة Redmi Note 10 / بديل..." required></label><label class="wide">ملاحظات (اختياري)<input name="notes" placeholder="معلومة إضافية عن التوافق"></label><button class="primary wide">حفظ القطعة</button></form>
+<h3 class="subhead">القطع المضافة ({{screens|length}})</h3>{% for s in screens %}<div class="admin-row"><div><b>{{s.part_name}}</b><small>{{s.phone}} · {{'شاشة' if s.kind=='screen' else 'لزقة'}}</small></div><form method="post" action="/admin/screen/{{s.id}}/delete"><button class="danger">حذف</button></form></div>{% else %}<p class="muted">لا توجد قطع بعد.</p>{% endfor %}</section>
+<section class="panel"><h2>＋ إضافة حساب Gmail جاهز</h2><form method="post" action="/admin/account" class="formgrid"><label class="wide">البريد الإلكتروني<input name="email" type="email" placeholder="example@gmail.com" required></label><label class="wide">كلمة المرور<input name="password" required></label><button class="primary wide">إضافة إلى المخزون</button></form>
+<h3 class="subhead">مخزون الحسابات ({{accounts|length}})</h3>{% for a in accounts %}<div class="admin-row"><div><b>{{a.email}}</b><small>{% if a.status=='available' %}متاح{% elif a.status=='reserved' %}محجوز مؤقتاً{% else %}تم استخدامه{% endif %}</small></div><div class="actions">{% if a.status!='available' %}<form method="post" action="/admin/account/{{a.id}}/reset"><button class="soft">إعادة للمتاح</button></form>{% endif %}<form method="post" action="/admin/account/{{a.id}}/delete"><button class="danger">حذف</button></form></div></div>{% else %}<p class="muted">لم تضف حسابات بعد.</p>{% endfor %}</section></div>{% endblock %}

@@ -1,15 +1,1 @@
-{% extends "base.html" %}{% block title %}تسجيل الدخول | رقميات{% endblock %}
-{% block content %}
-<section class="login-wrap">
-  <div class="login-card">
-    <img class="login-logo" src="{{ url_for('static', filename='logo.jpg') }}" alt="رقميات">
-    <h1>أهلاً بك في رقميات</h1><p class="muted">سجّل الدخول للمتابعة إلى لوحة الموقع</p>
-    <form method="post" class="stack">
-      <label>اسم المستخدم<input name="username" autocomplete="username" required placeholder="اسم المستخدم"></label>
-      <label>كلمة المرور<input name="password" type="password" autocomplete="current-password" required placeholder="كلمة المرور"></label>
-      <button class="primary wide">تسجيل الدخول</button>
-    </form>
-    <p class="hint">للدخول الأول كمدير: admin / 123123</p>
-  </div>
-</section>
-{% endblock %}
+{% extends "base.html" %}{% block content %}<section class="loginbox"><div class="lock">⌑</div><h1>دخول المدير</h1><p>أدخل كلمة مرور الإدارة للمتابعة.</p><form method="post"><input type="password" name="password" placeholder="كلمة المرور" required autofocus><button class="primary" type="submit">تسجيل الدخول</button></form></section>{% endblock %}
