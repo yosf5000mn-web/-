@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087451">
+  <title>Y-N STORE | المحاسبة</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section id="loginScreen" class="login-page">
+    <form id="loginForm" class="login-card">
+      <div class="brand-mark">YN</div>
+      <p class="eyebrow">PRIVATE ACCOUNTING</p>
+      <h1>Y-N STORE</h1>
+      <p class="muted">نظام المحاسبة الخاص بك</p>
+      <label for="loginPassword">كلمة المرور الخاصة</label>
+      <input id="loginPassword" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required>
+      <button class="btn primary full" type="submit">تسجيل الدخول ←</button>
+      <p id="loginError" class="error-text" aria-live="polite"></p>
+      <div class="secure-note">▣ مساحة خاصة ومحمية بكلمة مرور</div>
+    </form>
+  </section>
+
+  <div id="appScreen" class="hidden">
+    <header class="topbar">
+      <a class="brand" href="#" id="homeLink"><span class="brand-mark small">YN</span><span><b>Y-N STORE</b><small>نظام المحاسبة</small></span></a>
+      <div class="top-actions">
+        <button class="btn ghost" id="exportBtn">تصدير CSV</button>
+        <button class="btn ghost" id="backupBtn">نسخة احتياطية</button>
+        <button class="btn ghost" id="logoutBtn">تسجيل الخروج</button>
+      </div>
+    </header>
+    <main class="container">
+      <section class="welcome">
+        <div><p class="eyebrow">FINANCIAL OVERVIEW</p><h1>لوحة المحاسبة</h1><p class="muted">تابع فواتيرك وحركة أموالك من مكان واحد.</p></div>
+        <button class="btn primary" id="newInvoiceBtn">＋ إنشاء فاتورة جديدة</button>
+      </section>
+      <div id="toast" class="toast hidden" role="status"></div>
+      <section class="stats">
+        <article class="stat-card balance"><div class="stat-top"><span>الرصيد النقدي التقريبي</span><span class="stat-icon">↗</span></div><strong id="cashTotal">0.00</strong><small>صافي المستلمات والمدفوعات والمصروفات</small></article>
+        <article class="stat-card"><div class="stat-top"><span>إجمالي المستلمات</span><span class="stat-icon green">↓</span></div><strong id="receiptTotal">0.00</strong><small>مبالغ تم استلامها</small></article>
+        <article class="stat-card"><div class="stat-top"><span>إجمالي المصروفات</span><span class="stat-icon red">↗</span></div><strong id="expenseTotal">0.00</strong><small>المصاريف المسجلة</small></article>
+        <article class="stat-card"><div class="stat-top"><span>إجمالي الديون</span><span class="stat-icon amber">◷</span></div><strong id="debtTotal">0.00</strong><small>ديون مسجلة للمتابعة</small></article>
+      </section>
+      <section class="quick-actions">
+        <button class="quick expense" data-kind="expense"><span>−</span><b>تسجيل مصروف</b><small>فاتورة مصروف جديد</small></button>
+        <button class="quick payment" data-kind="payment"><span>↗</span><b>تسجيل مدفوعات</b><small>مبلغ تم دفعه</small></button>
+        <button class="quick receipt" data-kind="receipt"><span>↓</span><b>تسجيل مستلمات</b><small>مبلغ تم استلامه</small></button>
+        <button class="quick debt" data-kind="debt"><span>◷</span><b>تسجيل دين</b><small>مبلغ مطلوب متابعته</small></button>
+      </section>
+      <section class="panel">
+        <div class="panel-heading"><div><h2>الفواتير</h2><p class="muted">جميع الحركات المالية المسجلة</p></div><span id="invoiceCount" class="count">0 فاتورة</span></div>
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="ابحث بالاسم أو التفاصيل أو رقم الفاتورة">
+          <select id="filterKind"><option value="all">كل الأنواع</option><option value="expense">مصروف</option><option value="payment">مدفوعات</option><option value="receipt">مستلمات</option><option value="debt">دين</option></select>
+        </div>
+        <div id="invoiceList"></div>
+      </section>
+      <footer>Y-N STORE <span>·</span> نظام محاسبة خاص</footer>
+    </main>
+  </div>
+
+  <dialog id="invoiceDialog" class="modal">
+    <form id="invoiceForm" class="modal-content">
+      <div class="modal-heading"><div><p class="eyebrow">NEW TRANSACTION</p><h2>إنشاء فاتورة جديدة</h2></div><button type="button" class="close-btn" id="closeDialog" aria-label="إغلاق">×</button></div>
+      <div class="form-grid">
+        <div class="field full-field"><label for="kind">نوع الفاتورة *</label><select id="kind" required><option value="expense">مصروف</option><option value="payment">مدفوعات</option><option value="receipt">مستلمات</option><option value="debt">دين</option></select></div>
+        <div class="field"><label for="person">الاسم / الجهة *</label><input id="person" required placeholder="مثال: أحمد أو شركة..."></div>
+        <div class="field"><label for="amount">المبلغ *</label><input id="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></div>
+        <div class="field full-field"><label for="description">تفاصيل الفاتورة *</label><input id="description" required placeholder="سبب الدفع أو الاستلام أو وصف الدين..."></div>
+        <div class="field"><label for="currency">العملة</label><select id="currency"><option value="TRY">ليرة تركية (TRY)</option><option value="USD">دولار أمريكي (USD)</option><option value="EUR">يورو (EUR)</option><option value="SYP">ليرة سورية (SYP)</option><option value="SAR">ريال سعودي (SAR)</option></select></div>
+        <div class="field"><label for="invoiceDate">تاريخ الفاتورة *</label><input id="invoiceDate" type="date" required></div>
+        <div class="field"><label for="dueDate">تاريخ الاستحقاق (اختياري)</label><input id="dueDate" type="date"></div>
+        <div class="field full-field"><label for="notes">ملاحظات (اختياري)</label><textarea id="notes" rows="3" placeholder="أي تفاصيل إضافية..."></textarea></div>
+      </div>
+      <div class="form-footer"><button type="button" class="btn ghost" id="cancelInvoice">إلغاء</button><button class="btn primary" type="submit">حفظ الفاتورة ✓</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="viewDialog" class="modal">
+    <div id="invoiceDetail" class="modal-content"></div>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
